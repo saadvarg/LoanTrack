@@ -14,8 +14,13 @@
 ## Screenshots
 
 > Dashboard · Calculator · Leads · Lead Detail
+<img width="358" height="815" alt="Screenshot 2026-04-19 at 11 13 23" src="https://github.com/user-attachments/assets/bb6837eb-7722-4358-aedd-8e973bdf5f49" />
 
+<img width="355" height="767" alt="Screenshot 2026-04-19 at 11 13 32" src="https://github.com/user-attachments/assets/7762a8fb-eefd-43ef-b8c2-bb944a8043f9" />
 
+<img width="368" height="808" alt="Screenshot 2026-04-19 at 11 13 13" src="https://github.com/user-attachments/assets/617b742c-c080-4cec-9319-4299591dc1b6" />
+
+<img width="365" height="817" alt="Screenshot 2026-04-19 at 11 12 51" src="https://github.com/user-attachments/assets/2390602a-3456-417f-9c10-812155db4e9a" />
 
 ---
 

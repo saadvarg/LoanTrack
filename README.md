@@ -61,3 +61,78 @@
 ---
 
 ## Architecture
+
+LoanTrack/
+├── Models/
+│   ├── Lead.swift           # Lead data model + LeadStatus enum
+│   └── LeadStore.swift      # ObservableObject data manager
+├── Views/
+│   ├── ContentView.swift    # Tab bar navigation
+│   ├── DashboardView.swift  # Metrics + recent leads
+│   ├── CalculatorView.swift # Mortgage calculator
+│   ├── LeadsView.swift      # Lead list + search
+│   ├── AddLeadView.swift    # Add new lead form
+│   └── LeadDetailView.swift # Individual lead profile
+└── LoanTrackApp.swift       # App entry point + environment injection
+
+---
+
+## How It Works
+User Input (SwiftUI View)
+↓
+LeadStore (ObservableObject)
+↓
+UserDefaults (JSON persistence)
+↓
+@Published properties trigger UI updates
+↓
+SwiftUI re-renders automatically
+
+---
+
+## Roadmap — v2 (In Progress)
+
+- [ ] Node.js REST API backend
+- [ ] PostgreSQL database via Supabase  
+- [ ] JWT Authentication (Login / Register)
+- [ ] AI-powered lead risk scoring (OpenAI API)
+- [ ] Loan comparison tool
+- [ ] Amortization schedule with charts
+- [ ] Push notifications for follow-up reminders
+- [ ] Analytics dashboard with monthly trends
+
+---
+
+## Background
+
+Built by **Saad El Mouataz** — a fintech operations professional with 9+ years 
+of experience coordinating mortgage workflows, lender relationships, and loan 
+origination processes at CR Equity AI. This app reflects real-world fintech 
+operational knowledge translated into a production-grade iOS application.
+
+---
+
+## Getting Started
+
+```bash
+# Clone the repo
+git clone https://github.com/saadvarg/LoanTrack-iOS.git
+
+# Open in Xcode
+open LoanTrack.xcodeproj
+
+# Run on simulator
+# Press Cmd + R
+```
+
+Requirements: Mac with Xcode 15+, iOS 16+ simulator
+
+---
+
+## License
+
+MIT License — free to use, modify, and distribute.
+
+---
+
+*Built with SwiftUI · Designed for real-world fintech workflows*

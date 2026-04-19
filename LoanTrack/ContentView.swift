@@ -1,21 +1,24 @@
-//
-//  ContentView.swift
-//  LoanTrack
-//
-//  Created by Saad EL Mouataz on 18/4/2026.
-//
-
 import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        TabView {
+            DashboardView()
+                .tabItem {
+                    Label("Dashboard", systemImage: "chart.bar.fill")
+                }
+
+            CalculatorView()
+                .tabItem {
+                    Label("Calculator", systemImage: "percent")
+                }
+
+            LeadsView()
+                .tabItem {
+                    Label("Leads", systemImage: "person.2.fill")
+                }
         }
-        .padding()
+        .accentColor(.blue)
     }
 }
 

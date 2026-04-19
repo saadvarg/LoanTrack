@@ -1,17 +1,13 @@
-//
-//  LoanTrackApp.swift
-//  LoanTrack
-//
-//  Created by Saad EL Mouataz on 18/4/2026.
-//
-
 import SwiftUI
 
 @main
-struct LoanTrackApp: App {
+struct LoanTrackApp: SwiftUI.App {
+    @StateObject var store = LeadStore()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(store)
         }
     }
 }

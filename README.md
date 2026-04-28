@@ -1,138 +1,207 @@
-# LoanTrack iOS
+# LoanTrack – Full-Stack Mobile Application
 
-> A fintech iOS application for mortgage calculation and lead management, 
-> built with SwiftUI. Designed for mortgage brokers, loan officers, 
-> and real estate professionals.
+LoanTrack is a full-stack fintech mobile application designed for mortgage professionals to manage leads, calculate loans, and interact with real-time backend services.
 
-![Platform](https://img.shields.io/badge/Platform-iOS%2016%2B-blue)
-![Language](https://img.shields.io/badge/Language-Swift%205.9-orange)
-![Framework](https://img.shields.io/badge/Framework-SwiftUI-purple)
-![Status](https://img.shields.io/badge/Status-Active%20Development-green)
+Built using modern iOS technologies with a scalable backend architecture, the project demonstrates real-world mobile development, API integration, and product-oriented design.
 
 ---
 
-## Screenshots
+## 🚀 Overview
 
-> Dashboard · Calculator · Leads · Lead Detail
-<img width="358" height="815" alt="Screenshot 2026-04-19 at 11 13 23" src="https://github.com/user-attachments/assets/bb6837eb-7722-4358-aedd-8e973bdf5f49" />
+* **iOS App**: Built with Swift and SwiftUI
+* **Backend API**: Node.js + Express
+* **Database**: Supabase (PostgreSQL)
+* **Authentication**: JWT-based login system
+* **Use Case**: Lead management + mortgage calculation for financial workflows
 
-<img width="355" height="767" alt="Screenshot 2026-04-19 at 11 13 32" src="https://github.com/user-attachments/assets/7762a8fb-eefd-43ef-b8c2-bb944a8043f9" />
+---
 
-<img width="368" height="808" alt="Screenshot 2026-04-19 at 11 13 13" src="https://github.com/user-attachments/assets/617b742c-c080-4cec-9319-4299591dc1b6" />
+##  Project Structure
 
-<img width="365" height="817" alt="Screenshot 2026-04-19 at 11 12 51" src="https://github.com/user-attachments/assets/2390602a-3456-417f-9c10-812155db4e9a" />
+```
+LoanTrack/
+ ├── ios-app/        # SwiftUI iOS application
+ ├── backend/        # Node.js REST API
+ └── README.md
+```
 
 ---
 
 ## Features
 
-### Mortgage Calculator
-- Real-time payment calculation using standard amortization formula
-- Inputs: loan amount, down payment, interest rate, loan term
-- Outputs: monthly payment, total payment, total interest paid
-- Animated results with clean financial formatting
+### 📱 iOS Application (SwiftUI)
 
-### Lead Management (CRM)
-- Full CRUD — add, view, edit, delete leads
-- Lead status pipeline: New → Contacted → Qualified → Closed → Lost
-- Search and filter leads by name or email
-- Persistent local storage — data survives app restarts
-- Lead detail screen with contact info, loan amount, and notes
+#### Mortgage Calculator
 
-### Dashboard
-- Real-time pipeline metrics — total leads, new, qualified, closed
-- Total pipeline value calculation
-- Recent leads quick view with navigation
-- Time-aware greeting
+* Real-time loan calculations using amortization formulas
+* Inputs: loan amount, interest rate, term, down payment
+* Outputs: monthly payment, total cost, interest breakdown
+
+#### Lead Management (CRM)
+
+* Full CRUD operations (Create, Read, Update, Delete)
+* Lead pipeline: New → Contacted → Qualified → Closed → Lost
+* Search and filtering functionality
+* Lead detail view with notes and financial data
+
+#### Dashboard
+
+* Real-time metrics (total leads, qualified, closed)
+* Pipeline value calculation
+* Recent leads overview
+
+---
+
+### Backend API (Node.js)
+
+* RESTful API architecture
+* Authentication with JWT
+* Role-based access control
+* Lead management endpoints
+* PDF generation service
+* Scoring system for lead evaluation
+* Integration-ready with frontend (iOS app)
 
 ---
 
 ## Tech Stack
 
-| Layer | Technology |
-|-------|-----------|
-| Language | Swift 5.9 |
-| Framework | SwiftUI |
-| Architecture | MVVM |
-| Data Persistence | UserDefaults (JSON encoded) |
-| State Management | @StateObject / @EnvironmentObject |
-| Minimum iOS | iOS 16+ |
+### iOS
+
+* Swift 5+
+* SwiftUI (with UIKit interoperability)
+* MVVM Architecture
+* State Management: `@StateObject`, `@EnvironmentObject`
+
+### Backend
+
+* Node.js / Express
+* Supabase (PostgreSQL)
+* REST APIs
+* Authentication Middleware
+
+### Tools & Integrations
+
+* Firebase (Crashlytics, Analytics – planned / optional)
+* Alamofire (network layer – planned integration)
 
 ---
 
 ## Architecture
 
-LoanTrack/
-├── Models/
-│   ├── Lead.swift           # Lead data model + LeadStatus enum
-│   └── LeadStore.swift      # ObservableObject data manager
-├── Views/
-│   ├── ContentView.swift    # Tab bar navigation
-│   ├── DashboardView.swift  # Metrics + recent leads
-│   ├── CalculatorView.swift # Mortgage calculator
-│   ├── LeadsView.swift      # Lead list + search
-│   ├── AddLeadView.swift    # Add new lead form
-│   └── LeadDetailView.swift # Individual lead profile
-└── LoanTrackApp.swift       # App entry point + environment injection
+### iOS (MVVM)
+
+```
+Views → ViewModels → Services → API → Backend
+```
+
+* Clean separation of concerns
+* Reactive UI updates via SwiftUI
+* Scalable for future integrations
 
 ---
 
-## How It Works
-User Input (SwiftUI View)
-↓
-LeadStore (ObservableObject)
-↓
-UserDefaults (JSON persistence)
-↓
-@Published properties trigger UI updates
-↓
-SwiftUI re-renders automatically
+## Data Flow
+
+```
+User Interaction (SwiftUI)
+        ↓
+ViewModel Logic
+        ↓
+API Request (REST)
+        ↓
+Node.js Backend
+        ↓
+Database (Supabase)
+        ↓
+Response → UI Update
+```
 
 ---
 
-## Roadmap — v2 (In Progress)
+## Current Status
 
-- [ ] Node.js REST API backend
-- [ ] PostgreSQL database via Supabase  
-- [ ] JWT Authentication (Login / Register)
-- [ ] AI-powered lead risk scoring (OpenAI API)
-- [ ] Loan comparison tool
-- [ ] Amortization schedule with charts
-- [ ] Push notifications for follow-up reminders
-- [ ] Analytics dashboard with monthly trends
+Active development
+
+Recent updates:
+
+* Backend API integration
+* Authentication system
+* Improved app structure (full-stack separation)
 
 ---
 
-## Background
+## Roadmap
 
-Built by **Saad El Mouataz** — a fintech operations professional with 9+ years 
-of experience coordinating mortgage workflows, lender relationships, and loan 
-origination processes at CR Equity AI. This app reflects real-world fintech 
-operational knowledge translated into a production-grade iOS application.
+* Full API integration using Alamofire
+* Firebase integration (Analytics & Crashlytics)
+* Push notifications (follow-ups & reminders)
+* Advanced analytics dashboard
+* AI-powered lead scoring
+* App Store deployment
+
+---
+
+## Author
+
+**Saad El Mouataz**
+
+Full-stack developer with a strong background in fintech operations, specializing in building real-world mobile applications that combine business logic with modern technologies.
 
 ---
 
 ## Getting Started
 
-```bash
-# Clone the repo
-git clone https://github.com/saadvarg/LoanTrack-iOS.git
+### Clone the repository
 
-# Open in Xcode
-open LoanTrack.xcodeproj
-
-# Run on simulator
-# Press Cmd + R
+```
+git clone https://github.com/saadvarg/LoanTrack.git
+cd LoanTrack
 ```
 
-Requirements: Mac with Xcode 15+, iOS 16+ simulator
+### Run iOS App
+
+```
+cd ios-app
+open LoanTrack.xcodeproj
+```
+
+Then press `Cmd + R` in Xcode
 
 ---
 
-## License
+### Run Backend API
+
+```
+cd backend
+npm install
+npm run dev
+```
+
+---
+
+## Requirements
+
+* macOS with Xcode 15+
+* iOS 16+ simulator
+* Node.js installed
+
+---
+
+##  License
 
 MIT License — free to use, modify, and distribute.
 
 ---
 
-*Built with SwiftUI · Designed for real-world fintech workflows*
+##  Note
+
+This project is actively evolving and demonstrates practical experience in:
+
+* iOS development with SwiftUI
+* API integration and backend systems
+* Real-world product design and architecture
+
+---
+
+Built with SwiftUI · Designed for real-world fintech workflows

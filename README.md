@@ -6,7 +6,7 @@ Built using modern iOS technologies with a scalable backend architecture, the pr
 
 ---
 
-## 🚀 Overview
+##  Overview
 
 * **iOS App**: Built with Swift and SwiftUI
 * **Backend API**: Node.js + Express
@@ -29,7 +29,7 @@ LoanTrack/
 
 ## Features
 
-### 📱 iOS Application (SwiftUI)
+###  iOS Application (SwiftUI)
 
 #### Mortgage Calculator
 

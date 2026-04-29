@@ -10,6 +10,8 @@ const analyticsRoutes = require('./routes/analytics');
 const scoringRoutes = require('./routes/scoring');
 const activitiesRoutes = require('./routes/activities');
 const pdfRoutes = require('./routes/pdf');
+const adminRoutes = require('./routes/admin');
+
 
 const app = express();
 
@@ -31,7 +33,7 @@ app.use('/api/analytics', analyticsRoutes);
 app.use('/api/scoring', scoringRoutes);
 app.use('/api/activities', activitiesRoutes);
 app.use('/api/pdf', pdfRoutes);
-
+app.use('/api/admin', adminRoutes);
 
 // ── HEALTH CHECK ───────────────────────────────────
 app.get('/api/health', (req, res) => {

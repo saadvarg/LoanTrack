@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const bcrypt = require('bcryptjs');
 const authMiddleware = require('../middleware/auth');
 const { attachUserRole, requireMinRole } = require('../middleware/roles');
 const supabase = require('../config/supabase');
@@ -8,18 +9,14 @@ router.use(authMiddleware);
 router.use(attachUserRole);
 router.use(requireMinRole('admin'));
 
-// ─────────────────────────────────────────────
 // GET /api/admin/users
-// Get all users (admin sees their team, superadmin sees all)
-// ─────────────────────────────────────────────
 router.get('/users', async (req, res) => {
   try {
     let query = supabase
       .from('users')
-      .select('id, email, full_name, role, company, team_id_ref, manager_id, created_at')
+      .select('id, email, full_name, role, status, company, team_id_ref, manager_id, created_at')
       .order('created_at', { ascending: false });
 
-    // Admin only sees users they manage
     if (req.userRole === 'admin') {
       query = query.eq('manager_id', req.userId);
     }
@@ -33,17 +30,11 @@ router.get('/users', async (req, res) => {
   }
 });
 
-// ─────────────────────────────────────────────
 // POST /api/admin/users
-// Create a new user (admin creates agents/viewers)
-// ─────────────────────────────────────────────
 router.post('/users', async (req, res) => {
   try {
-    const bcrypt = require('bcryptjs');
     const { email, password, fullName, role, company } = req.body;
 
-    // Admins can only create agents and viewers
-    // Superadmin can create any role
     const allowedRoles = req.userRole === 'superadmin'
       ? ['superadmin', 'admin', 'agent', 'viewer']
       : ['agent', 'viewer'];
@@ -55,14 +46,15 @@ router.post('/users', async (req, res) => {
       });
     }
 
-    // Check email not taken
-    const { data: existing } = await supabase
+    const { data: existingUsers, error: existingError } = await supabase
       .from('users')
       .select('id')
       .eq('email', email)
-      .single();
+      .limit(1);
 
-    if (existing) {
+    if (existingError) throw existingError;
+
+    if (existingUsers && existingUsers.length > 0) {
       return res.status(409).json({
         success: false,
         message: 'Email already registered',
@@ -80,8 +72,9 @@ router.post('/users', async (req, res) => {
         role: role || 'agent',
         company: company || null,
         manager_id: req.userRole === 'admin' ? req.userId : null,
+        status: 'pending',
       }])
-      .select('id, email, full_name, role, company, created_at')
+      .select('id, email, full_name, role, status, company, created_at')
       .single();
 
     if (error) throw error;
@@ -97,10 +90,7 @@ router.post('/users', async (req, res) => {
   }
 });
 
-// ─────────────────────────────────────────────
 // PUT /api/admin/users/:id/role
-// Change a user's role
-// ─────────────────────────────────────────────
 router.put('/users/:id/role', async (req, res) => {
   try {
     const { role } = req.body;
@@ -121,7 +111,7 @@ router.put('/users/:id/role', async (req, res) => {
       .from('users')
       .update({ role })
       .eq('id', id)
-      .select('id, email, full_name, role')
+      .select('id, email, full_name, role, status, company, created_at')
       .single();
 
     if (error) throw error;
@@ -136,15 +126,11 @@ router.put('/users/:id/role', async (req, res) => {
   }
 });
 
-// ─────────────────────────────────────────────
 // DELETE /api/admin/users/:id
-// Deactivate a user (superadmin only)
-// ─────────────────────────────────────────────
 router.delete('/users/:id', requireMinRole('superadmin'), async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Prevent self-deletion
     if (id === req.userId) {
       return res.status(400).json({
         success: false,
@@ -165,10 +151,7 @@ router.delete('/users/:id', requireMinRole('superadmin'), async (req, res) => {
   }
 });
 
-// ─────────────────────────────────────────────
 // GET /api/admin/leads
-// Get all leads (admin sees team leads, superadmin sees all)
-// ─────────────────────────────────────────────
 router.get('/leads', async (req, res) => {
   try {
     let query = supabase
@@ -179,7 +162,6 @@ router.get('/leads', async (req, res) => {
       `)
       .order('date_added', { ascending: false });
 
-    // Admin only sees leads from their team members
     if (req.userRole === 'admin') {
       const { data: teamMembers } = await supabase
         .from('users')
@@ -199,10 +181,7 @@ router.get('/leads', async (req, res) => {
   }
 });
 
-// ─────────────────────────────────────────────
 // GET /api/admin/stats
-// Team performance stats
-// ─────────────────────────────────────────────
 router.get('/stats', async (req, res) => {
   try {
     let usersQuery = supabase
@@ -226,7 +205,6 @@ router.get('/stats', async (req, res) => {
     const closed = leads?.filter(l => l.status === 'closed').length || 0;
     const pipeline = leads?.reduce((sum, l) => sum + (l.loan_amount || 0), 0) || 0;
 
-    // Per agent breakdown
     const agentStats = (users || []).map(user => {
       const agentLeads = leads?.filter(l => l.user_id === user.id) || [];
       return {
@@ -257,10 +235,8 @@ router.get('/stats', async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 });
-// ─────────────────────────────────────────────
+
 // GET /api/admin/users/pending
-// Get all pending users awaiting approval
-// ─────────────────────────────────────────────
 router.get('/users/pending', async (req, res) => {
   try {
     const { data, error } = await supabase
@@ -281,10 +257,7 @@ router.get('/users/pending', async (req, res) => {
   }
 });
 
-// ─────────────────────────────────────────────
 // PUT /api/admin/users/:id/approve
-// Approve a pending user + optionally set role
-// ─────────────────────────────────────────────
 router.put('/users/:id/approve', async (req, res) => {
   try {
     const { id } = req.params;
@@ -303,18 +276,23 @@ router.put('/users/:id/approve', async (req, res) => {
         role: assignedRole,
       })
       .eq('id', id)
-      .select('id, email, full_name, role, status')
+      .select('id, email, full_name, role, status, company, created_at')
       .single();
 
     if (error) throw error;
 
-    // Log activity
-    await supabase.from('activities').insert([{
-      lead_id: null,
-      user_id: req.userId,
-      action: 'User Approved',
-      note: `${data.full_name} approved as ${assignedRole}`,
-    }]).catch(() => {}); // Don't fail if activities insert fails
+    const { error: activityError } = await supabase
+      .from('activities')
+      .insert([{
+        lead_id: null,
+        user_id: req.userId,
+        action: 'User Approved',
+        note: `${data.full_name} approved as ${assignedRole}`,
+      }]);
+
+    if (activityError) {
+      console.log('Activity log insert failed:', activityError.message);
+    }
 
     res.json({
       success: true,
@@ -326,10 +304,38 @@ router.put('/users/:id/approve', async (req, res) => {
   }
 });
 
-// ─────────────────────────────────────────────
+// PUT /api/admin/users/:id/reject
+router.put('/users/:id/reject', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (id === req.userId) {
+      return res.status(400).json({
+        success: false,
+        message: 'You cannot reject your own account',
+      });
+    }
+
+    const { data, error } = await supabase
+      .from('users')
+      .update({ status: 'rejected' })
+      .eq('id', id)
+      .select('id, email, full_name, role, status, company, created_at')
+      .single();
+
+    if (error) throw error;
+
+    res.json({
+      success: true,
+      message: `${data.full_name} has been rejected`,
+      data,
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 // PUT /api/admin/users/:id/suspend
-// Suspend an active user
-// ─────────────────────────────────────────────
 router.put('/users/:id/suspend', async (req, res) => {
   try {
     const { id } = req.params;
@@ -345,7 +351,7 @@ router.put('/users/:id/suspend', async (req, res) => {
       .from('users')
       .update({ status: 'suspended' })
       .eq('id', id)
-      .select('id, email, full_name, role, status')
+      .select('id, email, full_name, role, status, company, created_at')
       .single();
 
     if (error) throw error;
@@ -360,10 +366,7 @@ router.put('/users/:id/suspend', async (req, res) => {
   }
 });
 
-// ─────────────────────────────────────────────
 // GET /api/admin/users/all
-// Get ALL users with status — grouped by role
-// ─────────────────────────────────────────────
 router.get('/users/all', async (req, res) => {
   try {
     let query = supabase
@@ -376,6 +379,7 @@ router.get('/users/all', async (req, res) => {
         .from('users')
         .select('id')
         .eq('manager_id', req.userId);
+
       const teamIds = [req.userId, ...(teamMembers || []).map(m => m.id)];
       query = query.in('id', teamIds);
     }
@@ -383,7 +387,6 @@ router.get('/users/all', async (req, res) => {
     const { data, error } = await query;
     if (error) throw error;
 
-    // Group by role
     const grouped = {
       superadmin: data.filter(u => u.role === 'superadmin'),
       admin: data.filter(u => u.role === 'admin'),

@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const { body, validationResult } = require('express-validator');
 const supabase = require('../config/supabase');
 
+
 router.post(
   '/register',
   [

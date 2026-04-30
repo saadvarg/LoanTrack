@@ -22,13 +22,19 @@ struct DashboardView: View {
                     Label("Calculator", systemImage: "number")
                 }
 
-            // Only show for admin and superadmin
+            // Admin tab — only for admin and superadmin
             if viewModel.userRole == "admin" || viewModel.userRole == "superadmin" {
                 AdminView()
                     .tabItem {
                         Label("Admin", systemImage: "shield.fill")
                     }
             }
+
+            // Profile tab — always visible
+            ProfileView()
+                .tabItem {
+                    Label("Profile", systemImage: "person.circle.fill")
+                }
         }
     }
 
@@ -90,27 +96,71 @@ struct DashboardView: View {
     }
 
     private func dashboardHeader(for user: User) -> some View {
-        VStack(alignment: .leading, spacing: 6) {
-            Text("Welcome back")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-            Text(user.fullName)
-                .font(.largeTitle.bold())
-            Text(user.email)
-                .font(.footnote)
-                .foregroundStyle(.secondary)
+        VStack(alignment: .leading, spacing: 12) {
+            
+            // ── TOP ROW — greeting + role badge ──────────
+            HStack(alignment: .top) {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(greetingText())
+                        .font(.subheadline)
+                        .foregroundColor(.white.opacity(0.8))
+                    Text(user.fullName)
+                        .font(.title2.bold())
+                        .foregroundColor(.white)
+                    Text(user.email)
+                        .font(.caption)
+                        .foregroundColor(.white.opacity(0.7))
+                }
+                
+                Spacer()
+                
+                // Role Badge
+                HStack(spacing: 6) {
+                    Image(systemName: user.roleIcon)
+                        .font(.system(size: 12))
+                    Text(user.roleLabel)
+                        .font(.caption.bold())
+                }
+                .foregroundColor(.white)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 6)
+                .background(Color.white.opacity(0.20))
+                .clipShape(Capsule())
+                .overlay(
+                    Capsule()
+                        .stroke(Color.white.opacity(0.4), lineWidth: 1)
+                )
+            }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding()
+        .padding(20)
         .background(
             LinearGradient(
-                colors: [Color.blue.opacity(0.9), Color.cyan.opacity(0.75)],
+                colors: headerGradient(for: user.role ?? "viewer"),
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
         )
-        .foregroundStyle(.white)
         .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+    }
+
+    private func greetingText() -> String {
+        let hour = Calendar.current.component(.hour, from: Date())
+        switch hour {
+        case 0..<12:  return "Good Morning 👋"
+        case 12..<17: return "Good Afternoon 👋"
+        default:      return "Good Evening 👋"
+        }
+    }
+
+    private func headerGradient(for role: String) -> [Color] {
+        switch role {
+        case "superadmin": return [Color.purple.opacity(0.9), Color.blue.opacity(0.8)]
+        case "admin":      return [Color.blue.opacity(0.9), Color.cyan.opacity(0.8)]
+        case "agent":      return [Color(red: 0.04, green: 0.15, blue: 0.27), Color(red: 0.05, green: 0.45, blue: 0.47)]
+        case "viewer":     return [Color.orange.opacity(0.8), Color.yellow.opacity(0.7)]
+        default:           return [Color.blue.opacity(0.9), Color.cyan.opacity(0.75)]
+        }
     }
 
     private func metricGrid(for metrics: DashboardMetrics) -> some View {

@@ -1,5 +1,6 @@
 import Foundation
 import Combine
+import AuthenticationServices
 
 @MainActor
 final class SessionViewModel: ObservableObject {
@@ -33,9 +34,20 @@ final class SessionViewModel: ObservableObject {
     }
 
     func login(email: String, password: String) async throws {
-        let session = try await APIService.shared.login(email: email, password: password)
+        let session = try await APIService.shared.login(
+            email: email,
+         password: password
+        )
+        if session.user.status == "pending" {
+                throw APIError.serverError("Your account is pending approval. An admin will activate your account shortly.")
+            }
+            
+            if session.user.status == "suspended" {
+                throw APIError.serverError("Your account has been suspended. Contact your administrator.")
+            }
         AuthService.shared.saveToken(session.token)
         currentUser = session.user
+       
     }
 
     func register(fullName: String, email: String, password: String, company: String?, role: String)

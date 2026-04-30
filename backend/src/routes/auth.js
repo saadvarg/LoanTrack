@@ -109,7 +109,8 @@ if (user.status === 'suspended') {
         success: true,
         message: 'Login successful',
         token,
-        user: { id: user.id, email: user.email, fullName: user.full_name, company: user.company },
+user: { id: user.id, email: user.email, fullName: user.full_name, company: user.company, role: user.role, status: user.status,
+},
       });
     } catch (err) {
       res.status(500).json({ success: false, message: err.message });

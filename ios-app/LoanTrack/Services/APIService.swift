@@ -1,12 +1,28 @@
 import Foundation
 
-enum APIError: Error {
+enum APIError: Error, LocalizedError {
     case invalidURL
     case invalidResponse
     case unauthorized
     case serverError(String)
     case decodingFailed
+
+    var errorDescription: String? {
+        switch self {
+        case .invalidURL:
+            return "Invalid server URL."
+        case .invalidResponse:
+            return "Invalid response from server."
+        case .unauthorized:
+            return "Unauthorized."
+        case .serverError(let message):
+            return message
+        case .decodingFailed:
+            return "Failed to decode server response."
+        }
+    }
 }
+
 
 final class APIService {
     static let shared = APIService()

@@ -1,207 +1,251 @@
-# LoanTrack – Full-Stack Mobile Application
+# LoanTrack – Full-Stack Fintech Mobile Application
 
-LoanTrack is a full-stack fintech mobile application designed for mortgage professionals to manage leads, calculate loans, and interact with real-time backend services.
+[
+](https://saadvarg.github.io/LoanTrackWeb/images/Simulator_Screenshot_-_iPhone_17_Pro_-_2026-05-07_at_13.25.04-1.png)
+[
+](https://saadvarg.github.io/LoanTrackWeb/images/Simulator_Screenshot_-_iPhone_17_Pro_-_2026-05-07_at_13.25.15-1.png)
+[
+](https://saadvarg.github.io/LoanTrackWeb/images/Simulator_Screenshot_-_iPhone_17_Pro_-_2026-05-07_at_13.25.15-1.png)
 
-Built using modern iOS technologies with a scalable backend architecture, the project demonstrates real-world mobile development, API integration, and product-oriented design.
+A production-ready fintech iOS application demonstrating full-stack development with Swift/SwiftUI frontend, Node.js/Express backend, and Supabase PostgreSQL database.
 
----
-
-##  Overview
-
-* **iOS App**: Built with Swift and SwiftUI
-* **Backend API**: Node.js + Express
-* **Database**: Supabase (PostgreSQL)
-* **Authentication**: JWT-based login system
-* **Use Case**: Lead management + mortgage calculation for financial workflows
+> **Watch the app in action:** [App Walkthrough Video](https://youtu.be/ZNXLBsGXSeE?si=v6bO7Q7gmtligBMd) | **See the demo:** [Live Web Interface](https://saadvarg.github.io/LoanTrackWeb/) | **Learn more:** [iOS Developer Portfolio](https://www.youtube.com/watch?v=rrBVHWx6H7E)
 
 ---
 
-##  Project Structure
+## 🎬 Quick Links
 
-```
-LoanTrack/
- ├── ios-app/        # SwiftUI iOS application
- ├── backend/        # Node.js REST API
- └── README.md
-```
+| **Resource** | **Link** |
+|---|---|
+| 🌐 **Live Web Demo** | https://saadvarg.github.io/LoanTrackWeb/ |
+| 🎥 **App Feature Walkthrough** | https://youtu.be/ZNXLBsGXSeE?si=v6bO7Q7gmtligBMd |
+| 💼 **iOS Developer Portfolio** | https://www.youtube.com/watch?v=rrBVHWx6H7E |
+| 🔗 **GitHub Repository** | https://github.com/saadvarg/LoanTrack-iOS |
+| 📧 **Contact** | elmouataz.saad@gmail.com |
+
+---
+
+## Overview
+
+LoanTrack is a **full-stack fintech application** built from the ground up to demonstrate production-grade iOS development combined with scalable backend architecture. Designed for mortgage professionals to manage leads, calculate loans, and interact with real-time backend services.
+
+**Key Highlights:**
+- ✅ **Shipped to production** with real users
+- ✅ **Full-stack ownership:** SwiftUI frontend → Node.js backend → PostgreSQL database
+- ✅ **Production security:** JWT authentication, role-based access control, encrypted data
+- ✅ **Real-world complexity:** Multi-user systems, concurrent API calls, state management at scale
+- ✅ **Solo shipped:** Built in 6 months while maintaining freelance clients
 
 ---
 
-## Features
+## 🎯 Features
 
-###  iOS Application (SwiftUI)
+### iOS Application (SwiftUI)
 
-#### Mortgage Calculator
+**Mortgage Calculator**
+- Real-time amortization calculations
+- Inputs: loan amount, interest rate, term, down payment
+- Outputs: monthly payment, total cost, interest breakdown
 
-* Real-time loan calculations using amortization formulas
-* Inputs: loan amount, interest rate, term, down payment
-* Outputs: monthly payment, total cost, interest breakdown
+**Lead Management (CRM)**
+- Full CRUD operations (Create, Read, Update, Delete)
+- Pipeline tracking: New → Contacted → Qualified → Closed → Lost
+- Search, filter, and sort leads
+- Lead detail view with notes, contact history, financial data
+- PDF export of lead summaries
 
-#### Lead Management (CRM)
+**Analytics Dashboard**
+- Real-time metrics: total leads, qualified count, closed deals
+- Pipeline value calculation and conversion rates
+- Recent leads overview with status indicators
 
-* Full CRUD operations (Create, Read, Update, Delete)
-* Lead pipeline: New → Contacted → Qualified → Closed → Lost
-* Search and filtering functionality
-* Lead detail view with notes and financial data
-
-#### Dashboard
-
-* Real-time metrics (total leads, qualified, closed)
-* Pipeline value calculation
-* Recent leads overview
-
----
+**Multi-User System**
+- 4-tier role system: Superadmin → Admin → Agent → Viewer
+- Role-based access control (RBAC)
+- Secure JWT authentication with token refresh
+- User profile management
 
 ### Backend API (Node.js)
 
-* RESTful API architecture
-* Authentication with JWT
-* Role-based access control
-* Lead management endpoints
-* PDF generation service
-* Scoring system for lead evaluation
-* Integration-ready with frontend (iOS app)
+- RESTful architecture with 20+ endpoints
+- JWT authentication and secure token refresh
+- Role-based access control preventing privilege escalation
+- Lead management endpoints (CRUD + filtering)
+- PDF generation service
+- Lead scoring system (AI/ML integration ready)
+- Supabase PostgreSQL integration
 
 ---
 
-## Tech Stack
+## 🏗️ Tech Stack
 
-### iOS
-
-* Swift 5+
-* SwiftUI (with UIKit interoperability)
-* MVVM Architecture
-* State Management: `@StateObject`, `@EnvironmentObject`
-
-### Backend
-
-* Node.js / Express
-* Supabase (PostgreSQL)
-* REST APIs
-* Authentication Middleware
-
-### Tools & Integrations
-
-* Firebase (Crashlytics, Analytics – planned / optional)
-* Alamofire (network layer – planned integration)
+| Layer | Technology |
+|-------|-----------|
+| **iOS** | Swift 5.9+ / SwiftUI |
+| **Backend** | Node.js 18+ / Express |
+| **Database** | Supabase (PostgreSQL) |
+| **Authentication** | JWT with refresh tokens |
+| **Architecture** | MVVM (iOS) + RESTful APIs |
+| **Deployment** | Vercel (backend) + GitHub Pages (web) |
 
 ---
 
-## Architecture
-
-### iOS (MVVM)
+## 📁 Project Structure
 
 ```
-Views → ViewModels → Services → API → Backend
-```
-
-* Clean separation of concerns
-* Reactive UI updates via SwiftUI
-* Scalable for future integrations
-
----
-
-## Data Flow
-
-```
-User Interaction (SwiftUI)
-        ↓
-ViewModel Logic
-        ↓
-API Request (REST)
-        ↓
-Node.js Backend
-        ↓
-Database (Supabase)
-        ↓
-Response → UI Update
+LoanTrack/
+├── ios-app/              # SwiftUI iOS Application
+│   ├── Views/           # UI components
+│   ├── ViewModels/      # MVVM business logic
+│   ├── Services/        # API calls & networking
+│   ├── Models/          # Data structures
+│   └── LoanTrack.xcodeproj
+│
+├── backend/             # Node.js/Express Backend
+│   ├── routes/          # API endpoints
+│   ├── controllers/     # Request handlers
+│   ├── middleware/      # Auth, validation, logging
+│   ├── package.json
+│   └── server.js
+│
+└── README.md
 ```
 
 ---
 
-## Current Status
+## 🎨 Architecture
 
-Active development
-
-Recent updates:
-
-* Backend API integration
-* Authentication system
-* Improved app structure (full-stack separation)
-
----
-
-## Roadmap
-
-* Full API integration using Alamofire
-* Firebase integration (Analytics & Crashlytics)
-* Push notifications (follow-ups & reminders)
-* Advanced analytics dashboard
-* AI-powered lead scoring
-* App Store deployment
-
----
-
-## Author
-
-**Saad El Mouataz**
-
-Full-stack developer with a strong background in fintech operations, specializing in building real-world mobile applications that combine business logic with modern technologies.
-
----
-
-## Getting Started
-
-### Clone the repository
-
+**iOS MVVM Pattern:**
 ```
-git clone https://github.com/saadvarg/LoanTrack.git
+SwiftUI Views
+    ↓
+ViewModels (State Management)
+    ↓
+Services (API Calls)
+    ↓
+URLSession (Network Layer)
+    ↓
+Backend (Node.js + PostgreSQL)
+```
+
+**Data Flow:**
+```
+User Action → ViewModel → API Request → Backend → Database → Response → UI Update
+```
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- macOS 12+ with Xcode 15+
+- iOS 16+ (simulator or device)
+- Node.js 18+ and npm
+- Git
+
+### Clone Repository
+
+```bash
+git clone https://github.com/saadvarg/LoanTrack-iOS.git
 cd LoanTrack
 ```
 
 ### Run iOS App
 
-```
+```bash
 cd ios-app
 open LoanTrack.xcodeproj
 ```
 
-Then press `Cmd + R` in Xcode
-
----
+Press **Cmd + R** in Xcode to build and run.
 
 ### Run Backend API
 
-```
+```bash
 cd backend
 npm install
+cp .env.example .env
+# Edit .env with your Supabase credentials
 npm run dev
+# Server runs on http://localhost:3000
 ```
 
----
+### Database Setup (Supabase)
 
-## Requirements
-
-* macOS with Xcode 15+
-* iOS 16+ simulator
-* Node.js installed
-
----
-
-##  License
-
-MIT License — free to use, modify, and distribute.
+1. Create account at [supabase.com](https://supabase.com)
+2. Create new project
+3. Copy `DATABASE_URL` to `.env`
+4. Run migrations: `npm run migrate`
 
 ---
 
-##  Note
+## 🔐 Security Features
 
-This project is actively evolving and demonstrates practical experience in:
-
-* iOS development with SwiftUI
-* API integration and backend systems
-* Real-world product design and architecture
+- ✅ JWT authentication with secure token refresh
+- ✅ Role-based access control (4-tier permission system)
+- ✅ Password hashing with bcrypt
+- ✅ SQL injection prevention via parameterized queries
+- ✅ CORS configuration for secure cross-origin requests
+- ✅ HTTPS only for API communication
 
 ---
 
-Built with SwiftUI · Designed for real-world fintech workflows
+## 📈 Current Status
+
+**Active Development**
+
+- ✅ Backend API fully integrated
+- ✅ Authentication system (JWT login/refresh)
+- ✅ Mortgage calculator with real-time amortization
+- ✅ Lead management CRM (full CRUD)
+- ✅ Role-based access control (4-tier)
+- ✅ Analytics dashboard with real-time metrics
+- ✅ PDF generation for lead reports
+- ⏳ Advanced AI-powered lead scoring
+- ⏳ Push notifications (reminders & follow-ups)
+- ⏳ App Store deployment (TestFlight beta)
+
+---
+
+## 👨‍💻 About the Author
+
+**Saad El Mouataz** — Full-stack developer with 9+ years in fintech operations, specializing in building production-grade mobile applications.
+
+**Background:**
+- Fintech operations at CR Equity AI
+- CRM systems at Avail (Realtor.com)
+- Fintech consulting (Top Rated on Fiverr)
+- Education: Master's in Business/Marketing (HEM), Bachelor's in progress (CS, ISMAGI)
+
+**Links:**
+- 💼 [Live Demo](https://saadvarg.github.io/LoanTrackWeb/)
+- 🎥 [App Walkthrough](https://youtu.be/ZNXLBsGXSeE?si=v6bO7Q7gmtligBMd)
+- 📱 [Developer Portfolio](https://www.youtube.com/watch?v=rrBVHWx6H7E)
+- 🌐 [GitHub](https://github.com/saadvarg)
+- 💻 [Fiverr Profile](https://www.fiverr.com/saadvarg)
+- 📧 [Email](mailto:elmouataz.saad@gmail.com)
+
+---
+
+## 📄 License
+
+MIT License — Free to use, modify, and distribute. See LICENSE for details.
+
+---
+
+## 🎯 What This Demonstrates
+
+1. **Production-Grade iOS Development** — Modern SwiftUI patterns, async/await, MVVM architecture
+2. **Backend Engineering** — RESTful APIs, authentication, database design, deployment
+3. **Full-Stack Thinking** — Understanding trade-offs between frontend/backend, product-oriented design
+4. **Shipping Quality** — Security, error handling, scalability from day one
+
+---
+
+<div align="center">
+
+**Built with SwiftUI · Production-Ready Architecture · Fintech-Grade Security**
+
+[🌐 Live Demo](https://saadvarg.github.io/LoanTrackWeb/) • [🎥 App Video](https://youtu.be/ZNXLBsGXSeE?si=v6bO7Q7gmtligBMd) • [💼 Portfolio](https://www.youtube.com/watch?v=rrBVHWx6H7E) • [👨‍💻 GitHub](https://github.com/saadvarg)
+
+</div>
